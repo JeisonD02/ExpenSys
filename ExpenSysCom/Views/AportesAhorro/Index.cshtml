@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ExpenSysCom.Modelos.AportesAhorro>
+
+@{
+    ViewData["Title"] = "Aportes de Ahorro";
+}
+
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="~/style/AportesAhorro/Index.css" rel="stylesheet" />
+</head>
+
+<h1 class="mb-4">Aportes de Ahorro Registrados</h1>
+
+@if (TempData["MetaFinalizada"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["MetaFinalizada"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Valor</th>
+            <th>Fecha</th>
+            <th>Ahorro</th>
+            <th>Ingreso</th>
+            <th class="text-center">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Valor.ToString("C")</td>
+                <td>@item.Fecha.ToShortDateString()</td>
+                <td>@item.IdAhorroNavigation?.Nombre</td>
+                <td>@item.IdIngresoNavigation?.Nombre</td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-primary me-1" asp-action="Edit" asp-route-id="@item.IdAporteAhorro" title="Editar">
+                        <i class="fas fa-pen"></i>
+                    </a>
+                    <a class="btn btn-sm btn-info me-1" asp-action="Details" asp-route-id="@item.IdAporteAhorro" title="Detalles">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.IdAporteAhorro" title="Eliminar">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="mt-4">
+    <a class="btn btn-success" asp-action="Create">
+        <i class="fas fa-plus"></i> Registrar Aporte
+    </a>
+    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary ms-2">
+        <i class="fas fa-arrow-left"></i> Volver Atrás
+    </a>
+</div>
+

@@ -1,0 +1,110 @@
+﻿@model ExpenSysCom.ViewModels.AhorroViewModel
+
+@{
+    ViewData["Title"] = "Editar Ahorro";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Editar Ahorro</h2>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="IdAhorro" />
+
+                    @if (Model.IdEstado == 3)  // 3 = Finalizado
+                    {
+                        <div class="alert alert-warning">
+                            Este ahorro está <strong>Finalizado</strong> y no puede editarse.
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input class="form-control" value="@Model.Nombre" disabled />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Descripción</label>
+                            <input class="form-control" value="@Model.Descripcion" disabled />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Porcentaje</label>
+                            <input class="form-control" value="@Model.Porcentaje" disabled />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Intensidad</label>
+                            <select class="form-control" disabled>
+                                <option>@Model.Intensidades.FirstOrDefault(i => i.Value == Model.IdIntensidad.ToString())?.Text</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Estado</label>
+                            <select class="form-control" disabled>
+                                <option>@Model.Estados.FirstOrDefault(e => e.Value == Model.IdEstado.ToString())?.Text</option>
+                            </select>
+                        </div>
+
+                        <a asp-action="Index" class="btn btn-secondary mt-2">Volver a la Lista</a>
+                    }
+                    else
+                    {
+                        <div class="form-group mb-3">
+                            <label asp-for="Nombre" class="form-label"></label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Descripcion" class="form-label"></label>
+                            <input asp-for="Descripcion" class="form-control" />
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Porcentaje" class="form-label"></label>
+                            <input asp-for="Porcentaje" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="Porcentaje" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="IdIntensidad" class="form-label"></label>
+                            <select asp-for="IdIntensidad" class="form-control" asp-items="Model.Intensidades"></select>
+                            <span asp-validation-for="IdIntensidad" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="IdEstado" class="form-label"></label>
+                            <select asp-for="IdEstado" class="form-control" asp-items="Model.Estados"></select>
+                            <span asp-validation-for="IdEstado" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                            <a asp-action="Index" class="btn btn-secondary mt-2">Cancelar y Volver a la Lista</a>
+                        </div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

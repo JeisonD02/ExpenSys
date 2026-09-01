@@ -1,0 +1,38 @@
+﻿@model ExpenSysCom.Modelos.CategoriasGasto
+
+@{
+    ViewData["Title"] = "Detalle de Categoría de Gasto";
+}
+
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="~/style/categoriasGasto/Details.css" rel="stylesheet" />
+</head>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm rounded-3">
+                <div class="card-header bg-info text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-wallet me-2"></i> Categoría de Gasto
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4"><i class="fas fa-tag me-2 text-muted"></i>Nombre</dt>
+                        <dd class="col-sm-8">@Model.Nombre</dd>
+                    </dl>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Volver
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model.IdCategoriaGasto" class="btn btn-info text-white">
+                        <i class="fas fa-edit me-1"></i> Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

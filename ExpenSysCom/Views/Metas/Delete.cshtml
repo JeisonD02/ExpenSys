@@ -1,0 +1,50 @@
+﻿@model ExpenSysCom.ViewModels.MetaViewModel
+
+@{
+    ViewData["Title"] = "Eliminar Meta";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Eliminar Meta</h2>
+        <div class="alert alert-danger text-center">
+            <strong>¡Atención!</strong> Esta acción es irreversible. ¿Estás seguro de que quieres eliminar esta meta?
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Nombre)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Descripcion)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Valor)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Valor)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FechaInicio)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaInicio)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FechaFin)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaFin)</dd>
+
+                    <dt class="col-sm-4">Ahorro</dt>
+                    <dd class="col-sm-8">@Model.NombreAhorro</dd>
+
+                    <dt class="col-sm-4">Estado</dt>
+                    <dd class="col-sm-8">@Model.NombreEstado</dd>
+                </dl>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="IdMeta" />
+                    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+                </form>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar y Volver a la Lista</a>
+            </div>
+        </div>
+    </div>
+</div>

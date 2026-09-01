@@ -1,0 +1,51 @@
+﻿@model ExpenSysCom.ViewModels.AhorroViewModel
+
+@{
+    ViewData["Title"] = "Eliminar Ahorro";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Eliminar Ahorro</h2>
+        <div class="alert alert-danger text-center">
+            <strong>¡Atención!</strong> Esta acción es irreversible. ¿Estás seguro de que quieres eliminar este ahorro?
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Nombre)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Descripcion)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Porcentaje)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Porcentaje)</dd>
+
+                    <dt class="col-sm-4">Estado</dt>
+                    <dd class="col-sm-8">@Model.NombreEstado</dd>
+                </dl>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="IdAhorro" />
+                    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+                </form>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar y Volver a la Lista</a>
+            </div>
+        </div>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger mt-2 text-center">@TempData["Error"]</div>
+        }
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success mt-2 text-center">@TempData["Success"]</div>
+        }
+    </div>
+</div>

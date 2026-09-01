@@ -1,0 +1,53 @@
+﻿@model ExpenSysCom.ViewModels.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Detalles del Usuario";
+}
+
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="~/style/Gasto/Index.css" rel="stylesheet" />
+</head>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm rounded-3">
+                <div class="card-header bg-info text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-circle me-2"></i> Perfil del Usuario
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Avatar -->
+                    <div class="text-center mb-4">
+                        <i class="fas fa-user-circle fa-5x text-secondary"></i>
+                        <h5 class="mt-2">@Model.UserName</h5>
+                        <span class="badge bg-primary">@Model.Role</span>
+                    </div>
+
+                    <!-- Datos -->
+                    <dl class="row">
+                        <dt class="col-sm-4"><i class="fas fa-envelope me-2 text-muted"></i>Correo</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-id-card me-2 text-muted"></i>Documento</dt>
+                        <dd class="col-sm-8">@Model.NoDocumento</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-phone me-2 text-muted"></i>Teléfono</dt>
+                        <dd class="col-sm-8">@Model.PhoneNumber</dd>
+                    </dl>
+                </div>
+
+                <div class="card-footer d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Volver
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info text-white">
+                        <i class="fas fa-edit me-1"></i> Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

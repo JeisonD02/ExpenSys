@@ -1,0 +1,125 @@
+﻿@model ExpenSysCom.ViewModels.MetaViewModel
+
+@{
+    ViewData["Title"] = "Editar";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Editar Meta</h2>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="IdMeta" />
+
+                    @if (Model.IdEstado == 3)  // 3 = Finalizada
+                    {
+                        <div class="alert alert-warning">
+                            Esta meta está <strong>Finalizada</strong> y no puede editarse.
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input class="form-control" value="@Model.Nombre" disabled />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" disabled>@Model.Descripcion</textarea>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Valor</label>
+                            <input class="form-control" value="@Model.Valor" disabled />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Fecha Inicio</label>
+                            <input class="form-control" value="@Model.FechaInicio.ToString("yyyy-MM-dd")" disabled />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Fecha Fin</label>
+                            <input class="form-control" value="@Model.FechaFin.ToString("yyyy-MM-dd")" disabled />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Ahorro</label>
+                            <select class="form-control" disabled>
+                                <option>@Model.Ahorros.FirstOrDefault(a => a.Value == Model.IdAhorro.ToString())?.Text</option>
+                            </select>
+                        </div>
+
+                        <a asp-action="Index" class="btn btn-secondary mt-2">Volver a la Lista</a>
+                    }
+                    else
+                    {
+                        <div class="form-group mb-3">
+                            <label asp-for="Nombre" class="form-label"></label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Descripcion" class="form-label"></label>
+                            <textarea asp-for="Descripcion" class="form-control"></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Valor" class="form-label"></label>
+                            <input asp-for="Valor" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="Valor" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="FechaInicio" class="form-label"></label>
+                            <input asp-for="FechaInicio" class="form-control" type="date" />
+                            <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="FechaFin" class="form-label"></label>
+                            <input asp-for="FechaFin" class="form-control" type="date" />
+                            <span asp-validation-for="FechaFin" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="IdAhorro" class="form-label">Ahorro</label>
+                            <select asp-for="IdAhorro" class="form-control" asp-items="@Model.Ahorros"></select>
+                            <span asp-validation-for="IdAhorro" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="IdEstado" class="form-label">Estado</label>
+                            <select asp-for="IdEstado" class="form-control" asp-items="@Model.Estados"></select>
+                            <span asp-validation-for="IdEstado" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                            <a asp-action="Index" class="btn btn-secondary mt-2">Cancelar y Volver a la Lista</a>
+                        </div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,25 @@
+﻿/* style/Gasto/Index.css */
+
+.table-container {
+    width: 100%;
+    max-width: 1100px; /* ajusta este valor según lo que quieras */
+    margin: 0 auto; /* centrado */
+}
+
+.table th, .table td {
+    padding: 12px 16px; /* más espacio interno */
+    vertical-align: middle;
+}
+
+.table {
+    width: 100%;
+    font-size: 15px;
+    text-align: center;
+    table-layout: auto; /* Permite que las celdas se adapten al contenido */
+}
+
+    .table th, .table td {
+        padding: 12px 15px;
+        vertical-align: middle;
+    }
+

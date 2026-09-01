@@ -1,0 +1,44 @@
+﻿@model ExpenSysCom.ViewModels.MetaViewModel
+
+@{
+    ViewData["Title"] = "Detalles de la Meta";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Detalles de la Meta</h2>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Nombre)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Descripcion)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Valor)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Valor)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FechaInicio)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaInicio)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FechaFin)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaFin)</dd>
+
+                    <dt class="col-sm-4">Ahorro</dt>
+                    <dd class="col-sm-8">@Model.NombreAhorro</dd>
+
+                    <dt class="col-sm-4">Estado</dt>
+                    <dd class="col-sm-8">@Model.NombreEstado</dd>
+                </dl>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <a asp-action="Edit" asp-route-id="@Model.IdMeta" class="btn btn-primary">Editar</a>
+                <a asp-action="Index" class="btn btn-secondary">Volver a la Lista</a>
+            </div>
+        </div>
+    </div>
+</div>

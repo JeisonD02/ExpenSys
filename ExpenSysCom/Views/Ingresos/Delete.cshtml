@@ -1,0 +1,54 @@
+﻿@model ExpenSysCom.Modelos.Ingreso
+
+@{
+    ViewData["Title"] = "Eliminar Ingreso";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Eliminar Ingreso</h2>
+        <div class="alert alert-danger text-center">
+            <strong>¡Atención!</strong> Esta acción es irreversible. ¿Estás seguro de que quieres eliminar este ingreso?
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Nombre</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                    <dt class="col-sm-4">Descripción</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+                    <dt class="col-sm-4">Valor</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Valor)</dd>
+
+                    <dt class="col-sm-4">Fecha</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Fecha)</dd>
+
+                    <dt class="col-sm-4">Categoría</dt>
+                    <dd class="col-sm-8">@Model.IdCategoriaIngresoNavigation?.Nombre</dd>
+                </dl>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="IdIngreso" />
+                    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+                </form>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar y Volver</a>
+            </div>
+        </div>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger mt-2 text-center">@TempData["Error"]</div>
+        }
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success mt-2 text-center">@TempData["Success"]</div>
+        }
+    </div>
+</div>

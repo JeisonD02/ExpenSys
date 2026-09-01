@@ -1,0 +1,53 @@
+﻿@model ExpenSysCom.Modelos.AportesAhorro
+
+@{
+    ViewData["Title"] = "Editar Aporte";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Editar Aporte</h2>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="IdAporteAhorro" />
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Valor" class="form-label"></label>
+                        <input asp-for="Valor" class="form-control" />
+                        <span asp-validation-for="Valor" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Fecha" class="form-label"></label>
+                        <input asp-for="Fecha" class="form-control" type="date" />
+                        <span asp-validation-for="Fecha" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="IdAhorro" class="form-label">Ahorro Asociado</label>
+                        <select asp-for="IdAhorro" class="form-control" asp-items="ViewBag.IdAhorro"></select>
+                        <span asp-validation-for="IdAhorro" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="IdIngreso" class="form-label">Ingreso Asociado</label>
+                        <select asp-for="IdIngreso" class="form-control" asp-items="ViewBag.IdIngreso"></select>
+                        <span asp-validation-for="IdIngreso" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

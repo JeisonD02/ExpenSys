@@ -1,0 +1,47 @@
+﻿@model ExpenSysCom.Modelos.Gasto
+
+@{
+    ViewData["Title"] = "Detalles del Gasto";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Detalles del Gasto</h2>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-bold">Nombre</dt>
+                    <dd class="col-sm-8">@Model.Nombre</dd>
+
+                    <dt class="col-sm-4 fw-bold">Descripción</dt>
+                    <dd class="col-sm-8">@Model.Descripcion</dd>
+
+                    <dt class="col-sm-4 fw-bold">Valor</dt>
+                    <dd class="col-sm-8 text-danger fw-bold">
+                        @Model.Valor.ToString("C")
+                    </dd>
+
+                    <dt class="col-sm-4 fw-bold">Fecha</dt>
+                    <dd class="col-sm-8">
+                        @Model.Fecha.ToString("dd/MM/yyyy")
+                    </dd>
+
+                    <dt class="col-sm-4 fw-bold">Categoría</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-warning text-dark">
+                            @Model.IdCategoriaGastoNavigation?.Nombre
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <a asp-action="Edit" asp-route-id="@Model.IdGasto" class="btn btn-primary">Editar</a>
+                <a asp-action="Delete" asp-route-id="@Model.IdGasto" class="btn btn-danger">Eliminar</a>
+                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+            </div>
+        </div>
+    </div>
+</div>

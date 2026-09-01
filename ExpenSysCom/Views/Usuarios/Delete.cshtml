@@ -1,0 +1,61 @@
+﻿@model ExpenSysCom.ViewModels.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+}
+
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="~/style/Gasto/Index.css" rel="stylesheet" />
+</head>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm rounded-3 border-danger">
+                <div class="card-header bg-danger text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-times me-2"></i> Confirmar eliminación
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning text-center">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        ¿Está seguro de que desea eliminar este usuario? Esta acción no se puede deshacer.
+                    </div>
+
+                    <!-- Datos del usuario -->
+                    <dl class="row">
+                        <dt class="col-sm-4"><i class="fas fa-user me-2 text-muted"></i>Usuario</dt>
+                        <dd class="col-sm-8">@Model.UserName</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-envelope me-2 text-muted"></i>Correo</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-id-card me-2 text-muted"></i>Documento</dt>
+                        <dd class="col-sm-8">@Model.NoDocumento</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-phone me-2 text-muted"></i>Teléfono</dt>
+                        <dd class="col-sm-8">@Model.PhoneNumber</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-user-tag me-2 text-muted"></i>Rol</dt>
+                        <dd class="col-sm-8">@Model.Role</dd>
+                    </dl>
+                </div>
+
+                <!-- Botones -->
+                <div class="card-footer d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Cancelar
+                    </a>
+                    <form asp-action="Delete" method="post" class="m-0">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-1"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

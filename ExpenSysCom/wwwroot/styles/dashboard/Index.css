@@ -1,0 +1,255 @@
+﻿:root {
+    --aside-width: 240px;
+    --bg-page: #f8fafc;
+    --aside-bg: #1e293b;
+    --aside-hover: #334155;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+    --card-radius: 14px;
+    --shadow: 0 4px 12px rgba(0,0,0,0.06);
+    --transition: all 0.25s ease;
+}
+
+/* Reset */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg-page);
+    color: #111827;
+}
+
+/* Sidebar */
+.dashboard-aside {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--aside-width);
+    background: var(--aside-bg);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+    .dashboard-aside .logo {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        padding: 8px;
+        transition: transform var(--transition);
+    }
+
+        .dashboard-aside .logo:hover {
+            transform: scale(1.05);
+        }
+
+.aside-section {
+    margin-bottom: 24px;
+}
+
+    .aside-section h6 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        margin: 16px 0 10px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+        color: #9ca3af;
+        font-weight: bold;
+    }
+
+.dashboard-aside .nav-link {
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+    .dashboard-aside .nav-link:hover {
+        background: var(--aside-hover);
+        padding-left: 18px;
+    }
+
+/* Main content */
+.dashboard-main {
+    margin-left: var(--aside-width); /* espacio para el aside */
+    padding: 30px;
+    width: calc(100% - var(--aside-width)); /* ocupa todo el espacio disponible */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Bienvenida */
+.welcome-message {
+    margin-bottom: 28px;
+}
+
+    .welcome-message h2 {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .welcome-message p {
+        color: var(--text-muted);
+        margin-top: 4px;
+    }
+
+/* Cards */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+    .dashboard-cards .card {
+        border-radius: var(--card-radius);
+        padding: 24px;
+        background: #fff;
+        box-shadow: var(--shadow);
+        border: none;
+        transition: var(--transition);
+    }
+
+        .dashboard-cards .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .dashboard-cards .card h5 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-cards .card p {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+/* Gráficos */
+.dashboard-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 24px;
+    width: 100%;
+}
+
+    .dashboard-charts-grid .card {
+        border-radius: var(--card-radius);
+        padding: 24px;
+        background: #fff;
+        box-shadow: var(--shadow);
+    }
+
+.chart-container {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    height: 320px;
+}
+
+/* Selector filtro gráfico */
+#filtro {
+    margin-bottom: 16px;
+}
+
+/* Totales */
+.row .card {
+    width: 100%;
+}
+
+/* Responsividad */
+@media (max-width: 1200px) {
+    .dashboard-main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-aside {
+        position: relative;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        box-shadow: none;
+        padding: 12px;
+    }
+
+    .welcome-message {
+        text-align: center;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+    }
+}
+
+
+.dashboard-aside {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--aside-width);
+    background: var(--aside-bg);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+    /* Contenedor de secciones desplazable */
+    .dashboard-aside .aside-sections {
+        flex: 1; /* ocupa todo el espacio disponible */
+        overflow-y: auto; /* scroll si hay muchas secciones */
+        padding-right: 4px; /* espacio para scroll */
+    }
+
+/* Cada sección de links */
+.aside-section {
+    margin-bottom: 24px;
+}
+
+/* Botón de cerrar sesión */
+.dashboard-aside .logout-btn {
+    margin-top: auto; /* se pega al fondo */
+    text-align: center;
+}
+
+    .dashboard-aside .logout-btn a {
+        display: inline-block;
+        width: 75%;
+        font-weight: 600;
+        border-radius: 50px;
+    }
+
+
+/* Contenedor del gráfico */
+.chart-container {
+    position: relative;
+    width: 100%; /* ocupar todo el ancho posible dentro del main */
+    max-width: 800px; /* limitar el ancho máximo */
+    height: 400px; /* altura más grande */
+    margin: 0 auto; /* centrar horizontalmente */
+}

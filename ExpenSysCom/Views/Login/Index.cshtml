@@ -1,0 +1,63 @@
+﻿@model ExpenSysCom.ViewModels.LoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/styles/login/Index.css" />
+</head>
+<body>
+    <!-- Logo en superior izquierdo -->
+    <img src="/resources/ExpenSys-LogoSinFondo.png" class="logo-fixed" alt="Logo ExpenSys" />
+
+    <div class="login-box">
+        <h2>Iniciar Sesión</h2>
+
+        <!-- Muestra el mensaje de éxito de registro si existe -->
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+        }
+
+        <form asp-controller="Login" asp-action="Index" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- Muestra el resumen de errores si existen -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @Html.ValidationSummary(false)
+                </div>
+            }
+
+            <div class="form-group">
+                <label asp-for="LoginIdentifier">Correo o nombre de usuario</label>
+                <input type="text" asp-for="LoginIdentifier" placeholder="Ingresa tu correo o usuario" required />
+                <span asp-validation-for="LoginIdentifier" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password">Contraseña</label>
+                <input type="password" asp-for="Password" placeholder="Contraseña" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input type="checkbox" asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label">Recuérdame</label>
+            </div>
+
+            <button type="submit" class="login-box btn btn-primary mb-3" value="Ingresar">Iniciar Sesión</button>
+        </form>
+
+        <div class="extra-links">
+            <p>¿No tienes cuenta? <a asp-controller="Register" asp-action="Index">Regístrate</a></p>
+        </div>
+    </div>
+</body>
+</html>

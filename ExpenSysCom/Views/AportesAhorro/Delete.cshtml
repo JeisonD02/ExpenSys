@@ -1,0 +1,52 @@
+﻿@model ExpenSysCom.Modelos.AportesAhorro
+
+@{
+    ViewData["Title"] = "Eliminar Aporte de Ahorro";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Eliminar Aporte de Ahorro</h2>
+
+        <div class="alert alert-danger text-center">
+            <strong>¡Atención!</strong> Esta acción es irreversible. ¿Estás seguro de que quieres eliminar este aporte?
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Valor)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Valor)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Fecha)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Fecha)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.IdAhorroNavigation)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.IdAhorroNavigation.IdAhorro)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.IdIngresoNavigation)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.IdIngresoNavigation.IdIngreso)</dd>
+                </dl>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="IdAporteAhorro" />
+                    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+                </form>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar y Volver</a>
+            </div>
+        </div>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger mt-2 text-center">@TempData["Error"]</div>
+        }
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success mt-2 text-center">@TempData["Success"]</div>
+        }
+    </div>
+</div>

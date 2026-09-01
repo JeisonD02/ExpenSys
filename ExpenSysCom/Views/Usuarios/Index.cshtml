@@ -1,0 +1,150 @@
+﻿@model IEnumerable<ExpenSysCom.ViewModels.UsuarioViewModel>
+
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+}
+
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="~/style/usuarios/Index.css" rel="stylesheet" />
+</head>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold text-primary">
+            <i class="fas fa-users me-2"></i> Gestión de Usuarios
+        </h2>
+    </div>
+</div>
+
+    <div class="card shadow-sm rounded-3 table-container">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>No. Documento</th>
+                            <th>Teléfono</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Editar</th>
+                            <th>Detalles</th>
+                            <th>Activar/Desactivar</th>
+                            <th>Contraseña</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@item.UserName</td>
+                                <td>@item.Email</td>
+                                <td>
+                                    @string.Format(System.Globalization.CultureInfo.GetCultureInfo("es-CO"), "{0:N0}", long.Parse(item.NoDocumento))
+                                </td>
+                                <td>
+                                    @string.Format("({0}) {1}-{2}",
+                                    item.PhoneNumber.Substring(0, 3),
+                                    item.PhoneNumber.Substring(3, 3),
+                                    item.PhoneNumber.Substring(6))
+                                </td>
+                                <td>
+                                    @if (item.Role == "Admin")
+                                    {
+                                        <span class="badge bg-primary"><i class="fas fa-shield-alt me-1"></i> Admin</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary"><i class="fas fa-user me-1"></i> Usuario</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger"><i class="fas fa-times-circle me-1"></i> Inactivo</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info" title="Detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    @if (item.IsActive)
+                                    {
+                                        <form asp-action="CambiarEstado" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <input type="hidden" name="activar" value="false" />
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Desactivar">
+                                                <i class="fas fa-user-slash"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="CambiarEstado" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <input type="hidden" name="activar" value="true" />
+                                            <button type="submit" class="btn btn-sm btn-success" title="Activar">
+                                                <i class="fas fa-user-check"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#resetPasswordModal-@item.Id" title="Resetear contraseña">
+                                        <i class="fas fa-key"></i>
+                                    </a>
+
+                                    <!-- Modal Reset Password -->
+                                    <div class="modal fade" id="resetPasswordModal-@item.Id" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form asp-action="ResetPassword" method="post">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Resetear Contraseña</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="Id" value="@item.Id" />
+                                                        <div class="mb-3">
+                                                            <label for="newPassword" class="form-label">Nueva Contraseña Temporal</label>
+                                                            <input type="password" class="form-control" name="NewPassword" required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            <div>
+                <a asp-action="Create" class="btn btn-success me-2">
+                    <i class="fas fa-plus me-1"></i> Crear Usuario
+                </a>
+                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver al Inicio
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>

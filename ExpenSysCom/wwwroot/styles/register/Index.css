@@ -1,0 +1,111 @@
+﻿/*
+    Estilos CSS para la vista de Registro
+    Archivo: wwwroot/style/Register/Index.css
+*/
+
+/* Estilos generales para el cuerpo de la página */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Usar min-height para permitir que la página se expanda si el contenido es largo */
+    margin: 0;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* Contenedor principal del formulario de registro */
+.register-box {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px; /* Un poco más ancho para acomodar más campos */
+    text-align: center;
+    box-sizing: border-box;
+}
+
+    /* Encabezado del formulario */
+    .register-box h2 {
+        margin-bottom: 24px;
+        color: #333333;
+        font-weight: 600;
+    }
+
+/* Estilos para los campos de entrada */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
+    input[type="password"]:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+/* Estilo para el botón de Registro */
+.register-box .btn-primary {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+    .register-box .btn-primary:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+/* Estilos para los enlaces de ayuda/registro */
+.extra-links {
+    margin-top: 20px;
+}
+
+    .extra-links a {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+        .extra-links a:hover {
+            text-decoration: underline;
+        }
+
+/* Estilos para mensajes de alerta */
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}

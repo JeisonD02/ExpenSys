@@ -1,0 +1,46 @@
+﻿@model ExpenSysCom.Modelos.Ingreso
+
+@{
+    ViewData["Title"] = "Detalles del Ingreso";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center my-4">Detalles del Ingreso</h2>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-bold">Nombre</dt>
+                    <dd class="col-sm-8">@Model.Nombre</dd>
+
+                    <dt class="col-sm-4 fw-bold">Descripción</dt>
+                    <dd class="col-sm-8">@Model.Descripcion</dd>
+
+                    <dt class="col-sm-4 fw-bold">Valor</dt>
+                    <dd class="col-sm-8 text-success fw-bold">
+                        @String.Format("{0:C}", Model.Valor)
+                    </dd>
+
+                    <dt class="col-sm-4 fw-bold">Fecha</dt>
+                    <dd class="col-sm-8">
+                        @Model.Fecha.ToString("dd/MM/yyyy")
+                    </dd>
+
+                    <dt class="col-sm-4 fw-bold">Categoría</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-info text-dark">
+                            @Model.IdCategoriaIngresoNavigation?.Nombre
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <a asp-action="Edit" asp-route-id="@Model.IdIngreso" class="btn btn-primary">Editar</a>
+                <a asp-action="Index" class="btn btn-secondary">Volver a la Lista</a>
+            </div>
+        </div>
+    </div>
+</div>
