@@ -39,9 +39,9 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="IdCategoriaIngreso" class="form-label"></label>
-                        <select asp-for="IdCategoriaIngreso" class="form-control" asp-items="Model.Categorias"></select>
-                        <span asp-validation-for="IdCategoriaIngreso" class="text-danger"></span>
+                        <label asp-for="CategoriaIngreso" class="form-label"></label>
+                        <select asp-for="CategoriaIngreso" class="form-control" asp-items="Html.GetEnumSelectList<CategoriaIngreso>()"></select>
+                        <span asp-validation-for="CategoriaIngreso" class="text-danger"></span>
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">

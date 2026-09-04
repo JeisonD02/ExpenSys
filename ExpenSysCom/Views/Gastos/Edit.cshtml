@@ -50,9 +50,9 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="IdCategoriaGasto" class="form-label">Categoría</label>
-                        <select asp-for="IdCategoriaGasto" asp-items="Model.Categorias" class="form-control"></select>
-                        <span asp-validation-for="IdCategoriaGasto" class="text-danger"></span>
+                        <label asp-for="CategoriaGasto" class="form-label">Categoría</label>
+                        <select asp-for="CategoriaGasto" asp-items="Html.GetEnumSelectList<CategoriaGasto>()" class="form-control"></select>
+                        <span asp-validation-for="CategoriaGasto" class="text-danger"></span>
                     </div>
 
                     <div class="d-grid gap-2">

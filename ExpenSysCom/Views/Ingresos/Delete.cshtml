@@ -1,4 +1,4 @@
-﻿@model ExpenSysCom.Modelos.Ingreso
+﻿@model ExpenSysCom.Models.Ingreso
 
 @{
     ViewData["Title"] = "Eliminar Ingreso";
@@ -28,7 +28,7 @@
                     <dd class="col-sm-8">@Html.DisplayFor(model => model.Fecha)</dd>
 
                     <dt class="col-sm-4">Categoría</dt>
-                    <dd class="col-sm-8">@Model.IdCategoriaIngresoNavigation?.Nombre</dd>
+                    <dd class="col-sm-8">@Model.CategoriaIngreso</dd>
                 </dl>
             </div>
 

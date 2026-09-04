@@ -1,6 +1,6 @@
 ﻿using ExpenSysCom.Data;
 using ExpenSysCom.ViewModels;
-using ExpenSysCom.Modelos;
+using ExpenSysCom.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

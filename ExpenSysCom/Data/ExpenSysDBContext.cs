@@ -1,4 +1,4 @@
-﻿using ExpenSysCom.Modelos;
+﻿using ExpenSysCom.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +14,8 @@ public partial class ExpenSysDBContext : IdentityDbContext<ApplicationUser>
 
     public virtual DbSet<Ahorro> Ahorros { get; set; } = null!;
     public virtual DbSet<AportesAhorro> AportesAhorros { get; set; } = null!;
-    public virtual DbSet<CategoriasGasto> CategoriasGastos { get; set; } = null!;
-    public virtual DbSet<CategoriasIngreso> CategoriasIngresos { get; set; } = null!;
-    public virtual DbSet<Estado> Estados { get; set; } = null!;
     public virtual DbSet<Gasto> Gastos { get; set; } = null!;
     public virtual DbSet<Ingreso> Ingresos { get; set; } = null!;
-    public virtual DbSet<Intensidad> Intensidades { get; set; } = null!;
     public virtual DbSet<Meta> Metas { get; set; } = null!;
     public virtual DbSet<GastosAhorro> GastosAhorros { get; set; } = null!;
 
@@ -49,18 +45,6 @@ public partial class ExpenSysDBContext : IdentityDbContext<ApplicationUser>
                 .WithMany()
                 .HasForeignKey(e => e.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.IdEstadoNavigation)
-                .WithMany(p => p.Ahorros)
-                .HasForeignKey(d => d.IdEstado)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Ahorro_Estado");
-
-            entity.HasOne(d => d.IdIntensidadNavigation)
-                .WithMany(p => p.Ahorros)
-                .HasForeignKey(d => d.IdIntensidad)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Ahorro_Intensidad");
         });
 
 
@@ -70,7 +54,7 @@ public partial class ExpenSysDBContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.IdIngreso).HasColumnName("ID_Ingreso");
             entity.Property(e => e.Descripcion).HasMaxLength(250).IsUnicode(false);
             entity.Property(e => e.Fecha).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
-            entity.Property(e => e.IdCategoriaIngreso).HasColumnName("ID_CategoriaIngreso");
+            entity.Property(e => e.CategoriaIngreso).HasColumnName("ID_CategoriaIngreso");
             entity.Property(e => e.Nombre).HasMaxLength(250).IsUnicode(false);
             entity.Property(e => e.Valor).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.IdUsuario).HasColumnName("ID_Usuario");
@@ -79,12 +63,6 @@ public partial class ExpenSysDBContext : IdentityDbContext<ApplicationUser>
                 .WithMany()
                 .HasForeignKey(e => e.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.IdCategoriaIngresoNavigation)
-                .WithMany(p => p.Ingresos)
-                .HasForeignKey(d => d.IdCategoriaIngreso)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Ingresos_CategoriasIngresos");
         });
 
         modelBuilder.Entity<Meta>(entity =>
@@ -108,12 +86,6 @@ public partial class ExpenSysDBContext : IdentityDbContext<ApplicationUser>
                 .HasForeignKey(d => d.IdAhorro)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Meta_Ahorro");
-
-            entity.HasOne(d => d.IdEstadoNavigation)
-                .WithMany(p => p.Meta)
-                .HasForeignKey(d => d.IdEstado)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Meta_Estado");
         });
 
         modelBuilder.Entity<Gasto>(entity =>
@@ -131,12 +103,6 @@ public partial class ExpenSysDBContext : IdentityDbContext<ApplicationUser>
                 .WithMany()
                 .HasForeignKey(g => g.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.IdCategoriaGastoNavigation)
-                  .WithMany(p => p.Gastos)
-                  .HasForeignKey(d => d.IdCategoriaGasto)
-                  .OnDelete(DeleteBehavior.ClientSetNull)
-                  .HasConstraintName("FK_Gastos_CategoriasGastos");
         });
 
         modelBuilder.Entity<GastosAhorro>(entity =>
@@ -183,34 +149,6 @@ public partial class ExpenSysDBContext : IdentityDbContext<ApplicationUser>
                 .HasConstraintName("FK_AportesAhorros_Ingresos");
         });
 
-
-        modelBuilder.Entity<CategoriasGasto>(entity =>
-        {
-            entity.HasKey(e => e.IdCategoriaGasto).HasName("PK_CategoriasGasto");
-            entity.Property(e => e.IdCategoriaGasto).HasColumnName("ID_CategoriasGasto");
-            entity.Property(e => e.Nombre).HasMaxLength(250).IsUnicode(false);
-        });
-
-        modelBuilder.Entity<CategoriasIngreso>(entity =>
-        {
-            entity.HasKey(e => e.IdCategoriaIngreso).HasName("PK_CategoriasIngreso");
-            entity.Property(e => e.IdCategoriaIngreso).HasColumnName("ID_CategoriasIngreso");
-            entity.Property(e => e.Nombre).HasMaxLength(250).IsUnicode(false);
-        });
-
-        modelBuilder.Entity<Estado>(entity =>
-        {
-            entity.HasKey(e => e.IdEstado).HasName("PK_Estados");
-            entity.Property(e => e.IdEstado).HasColumnName("ID_Estado");
-            entity.Property(e => e.Nombre).HasMaxLength(250).IsUnicode(false);
-        });
-
-        modelBuilder.Entity<Intensidad>(entity =>
-        {
-            entity.HasKey(e => e.IdIntensidad).HasName("PK_Intensidades");
-            entity.Property(e => e.IdIntensidad).HasColumnName("ID_Intensidad");
-            entity.Property(e => e.Nombre).HasMaxLength(250).IsUnicode(false);
-        });
 
         OnModelCreatingPartial(modelBuilder);
     }

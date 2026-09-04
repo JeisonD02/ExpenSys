@@ -1,12 +1,13 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using ExpenSysCom.Data;
-using ExpenSysCom.Modelos;
+﻿using ExpenSysCom.Data;
+using ExpenSysCom.Enums;
+using ExpenSysCom.Models;
 using ExpenSysCom.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 [Authorize]
 public class GastosController : Controller
@@ -18,14 +19,15 @@ public class GastosController : Controller
         _context = context;
     }
 
-    // ======================= AUXILIAR =======================
+
     private string ObtenerIdUsuarioLogueado()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
         return userIdClaim?.Value ?? string.Empty;
     }
 
-    // ======================= INDEX (GET/POST) =======================
+
+    // ======================= INDEX =======================
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -44,7 +46,6 @@ public class GastosController : Controller
         string idUsuario = ObtenerIdUsuarioLogueado();
 
         var query = _context.Gastos
-            .Include(g => g.IdCategoriaGastoNavigation)
             .Where(g => g.IdUsuario == idUsuario)
             .AsQueryable();
 
@@ -64,17 +65,14 @@ public class GastosController : Controller
         return View(gastos);
     }
 
+
+
     // ======================= CREATE (GET) =======================
     public IActionResult Create()
     {
         var model = new GastoViewModel
         {
-            Categorias = _context.CategoriasGastos
-                .Select(c => new SelectListItem
-                {
-                    Value = c.IdCategoriaGasto.ToString(),
-                    Text = c.Nombre
-                }).ToList()
+    
         };
 
         return View(model);
@@ -87,26 +85,15 @@ public class GastosController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.Categorias = _context.CategoriasGastos
-                .Select(c => new SelectListItem
-                {
-                    Value = c.IdCategoriaGasto.ToString(),
-                    Text = c.Nombre
-                }).ToList();
-
             return View(model);
         }
 
         var usuarioId = ObtenerIdUsuarioLogueado();
+        
         if (string.IsNullOrEmpty(usuarioId))
         {
             ModelState.AddModelError("", "Usuario no autenticado.");
-            model.Categorias = _context.CategoriasGastos
-                .Select(c => new SelectListItem
-                {
-                    Value = c.IdCategoriaGasto.ToString(),
-                    Text = c.Nombre
-                }).ToList();
+        
             return View(model);
         }
 
@@ -117,7 +104,7 @@ public class GastosController : Controller
             Valor = model.Valor,
             Fecha = model.Fecha,
             IdUsuario = usuarioId,
-            IdCategoriaGasto = model.IdCategoriaGasto
+            CategoriaGasto = model.CategoriaGasto
         };
 
         _context.Gastos.Add(gasto);
@@ -146,17 +133,13 @@ public class GastosController : Controller
             Descripcion = gasto.Descripcion,
             Valor = gasto.Valor,
             Fecha = gasto.Fecha,
-            IdCategoriaGasto = gasto.IdCategoriaGasto,
-            Categorias = _context.CategoriasGastos
-                .Select(c => new SelectListItem
-                {
-                    Value = c.IdCategoriaGasto.ToString(),
-                    Text = c.Nombre
-                }).ToList()
+            CategoriaGasto = gasto.CategoriaGasto,
         };
 
         return View(model);
     }
+
+
 
     // ======================= EDIT (POST) =======================
     [HttpPost]
@@ -167,12 +150,6 @@ public class GastosController : Controller
 
         if (!ModelState.IsValid)
         {
-            model.Categorias = _context.CategoriasGastos
-                .Select(c => new SelectListItem
-                {
-                    Value = c.IdCategoriaGasto.ToString(),
-                    Text = c.Nombre
-                }).ToList();
             return View(model);
         }
 
@@ -189,12 +166,13 @@ public class GastosController : Controller
             gasto.Descripcion = model.Descripcion;
             gasto.Valor = model.Valor;
             gasto.Fecha = model.Fecha;
-            gasto.IdCategoriaGasto = model.IdCategoriaGasto;
+            gasto.CategoriaGasto = model.CategoriaGasto;
 
             _context.Update(gasto);
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "¡Gasto actualizado exitosamente!";
+
             return RedirectToAction(nameof(Index));
         }
         catch (DbUpdateConcurrencyException)
@@ -214,7 +192,6 @@ public class GastosController : Controller
         string usuarioId = ObtenerIdUsuarioLogueado();
 
         var gasto = await _context.Gastos
-            .Include(g => g.IdCategoriaGastoNavigation)
             .FirstOrDefaultAsync(g => g.IdGasto == id && g.IdUsuario == usuarioId);
 
         if (gasto == null) return NotFound();
@@ -241,6 +218,9 @@ public class GastosController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+
+
+
     // ======================= DETAILS =======================
     public async Task<IActionResult> Details(int? id)
     {
@@ -249,7 +229,6 @@ public class GastosController : Controller
         string usuarioId = ObtenerIdUsuarioLogueado();
 
         var gasto = await _context.Gastos
-            .Include(g => g.IdCategoriaGastoNavigation)
             .FirstOrDefaultAsync(g => g.IdGasto == id && g.IdUsuario == usuarioId);
 
         if (gasto == null) return NotFound();
@@ -257,7 +236,8 @@ public class GastosController : Controller
         return View(gasto);
     }
 
-    //pdf
+
+    //============= PDF =================
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ExportarPdfGastos(DateTime? fechaInicio, DateTime? fechaFin)
@@ -266,7 +246,6 @@ public class GastosController : Controller
 
         var query = _context.Gastos
             .Where(g => g.IdUsuario == userId)
-            .Include(g => g.IdCategoriaGastoNavigation)  
             .AsQueryable();
 
         if (fechaInicio.HasValue)
@@ -280,11 +259,12 @@ public class GastosController : Controller
         var datosReporte = gastos.Select(g => new DatoReporte
         {
             Nombre = g.Nombre,
-            Categoria = g.IdCategoriaGastoNavigation?.Nombre ?? "(Sin categoría)", 
+            Categoria = g.CategoriaGasto.ToString(), 
             Descripcion = g.Descripcion,
             Valor = g.Valor,
             Fecha = g.Fecha
-        }).ToList();
+        })
+        .ToList();
 
         var reportePdf = new ReportePdf();
 

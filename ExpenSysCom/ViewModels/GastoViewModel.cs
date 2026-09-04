@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpenSysCom.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
@@ -31,13 +32,13 @@ public class GastoViewModel
     [Range(0.01, double.MaxValue, ErrorMessage = "Ingrese un Valor valido")]
     public decimal Valor { get; set; }
 
+
     [DataType(DataType.Date)]
     [Required(ErrorMessage = "La fecha es obligatoria")]
     [FechaMaximaActual(ErrorMessage = "La fecha no puede ser futura")]
     public DateTime Fecha { get; set; }
 
-    [Required(ErrorMessage = "Debe seleccionar una categoría")]
-    public int IdCategoriaGasto { get; set; }
 
-    public IEnumerable<SelectListItem> Categorias { get; set; } = new List<SelectListItem>();
+    [Required(ErrorMessage = "Debe seleccionar una categoría")]
+    public CategoriaGasto CategoriaGasto { get; set; }
 }

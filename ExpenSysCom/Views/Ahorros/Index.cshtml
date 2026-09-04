@@ -38,26 +38,28 @@
                 <td>@ahorro.Descripcion</td>
                 <td class="fw-bold text-success">@ahorro.Porcentaje %</td>
                 <td>
-                    <span class="badge @(ahorro.NombreEstado == "Activo" ? "bg-success"
-                                                                      : ahorro.NombreEstado == "Pausado" ? "bg-warning text-dark"
+                    <span class="badge @(ahorro.Estado == Estado.Activo ? "bg-success"
+                                                                      : ahorro.Estado == Estado.Pausado ? "bg-warning text-dark"
                                                                       : "bg-secondary")">
-                    @ahorro.NombreEstado
-                </span>
-            </td>
-            <td>@ahorro.NombreIntensidad</td>
-            <td class="text-center">
-                <a asp-action="Details" asp-route-id="@ahorro.IdAhorro" class="btn btn-sm btn-info me-1" title="Detalles">
-                    <i class="fas fa-info-circle"></i>
-                </a>
-                <a asp-action="Edit" asp-route-id="@ahorro.IdAhorro" class="btn btn-sm btn-primary me-1" title="Editar">
-                    <i class="fas fa-pen"></i>
-                </a>
-                <a asp-action="Delete" asp-route-id="@ahorro.IdAhorro" class="btn btn-sm btn-danger" title="Eliminar">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </td>
-        </tr>
-                }
+                        @ahorro.Estado
+                    </span>
+                </td>
+                <td>
+                    @ahorro.Intensidad
+                </td>
+                <td class="text-center">
+                    <a asp-action="Details" asp-route-id="@ahorro.IdAhorro" class="btn btn-sm btn-info me-1" title="Detalles">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@ahorro.IdAhorro" class="btn btn-sm btn-primary me-1" title="Editar">
+                        <i class="fas fa-pen"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@ahorro.IdAhorro" class="btn btn-sm btn-danger" title="Eliminar">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 

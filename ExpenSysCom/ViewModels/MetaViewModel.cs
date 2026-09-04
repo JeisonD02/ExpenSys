@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using ExpenSysCom.Modelos;
+using ExpenSysCom.Models;
+using ExpenSysCom.Enums;
 
 namespace ExpenSysCom.ViewModels;
 
@@ -38,17 +39,12 @@ public class MetaViewModel
     [DisplayName("Ahorro")]
     public int IdAhorro { get; set; }
 
+
     [Required(ErrorMessage = "Debe seleccionar un Estado.")]
     [DisplayName("Estado")]
-    public int IdEstado { get; set; }
+    public Estado Estado { get; set; }
 
-    //Proppiedades para Details y Delete
-    public string? NombreAhorro { get; set; }  // <-- Nuevo
-    public string? NombreEstado { get; set; }  // <-- Nuevo
+    public string? NombreAhorro { get; set; }  
 
-
-    // Propiedades para los dropdowns de las vistas de "Crear" y "Editar"
-    // Estas propiedades no son parte del modelo de la base de datos
     public SelectList? Ahorros { get; set; }
-    public SelectList? Estados { get; set; }
 }

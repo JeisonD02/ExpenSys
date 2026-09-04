@@ -1,13 +1,14 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using ExpenSysCom.Data;
-using ExpenSysCom.Modelos;
+﻿using ExpenSysCom.Data;
+using ExpenSysCom.Models;
 using ExpenSysCom.Services;
 using ExpenSysCom.ViewModels;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ExpenSysCom.Enums;
 
 namespace ExpenSysCom.Controllers
 {
@@ -20,8 +21,8 @@ namespace ExpenSysCom.Controllers
             _context = context;
         }
 
-        //index
 
+        //Index 
         [HttpGet]
         public async Task<IActionResult> Index(DateTime? fechaInicio, DateTime? fechaFin)
         {
@@ -30,7 +31,6 @@ namespace ExpenSysCom.Controllers
 
             var query = _context.Metas
                 .Include(m => m.IdAhorroNavigation)
-                .Include(m => m.IdEstadoNavigation)
                 .Where(m => m.IdUsuario == userId)
                 .AsQueryable();
 
@@ -51,6 +51,7 @@ namespace ExpenSysCom.Controllers
         }
 
 
+
         // ======================= DETAILS =======================
         public async Task<IActionResult> Details(int? id)
         {
@@ -58,7 +59,6 @@ namespace ExpenSysCom.Controllers
 
             var meta = await _context.Metas
                 .Include(m => m.IdAhorroNavigation)
-                .Include(m => m.IdEstadoNavigation)
                 .FirstOrDefaultAsync(m => m.IdMeta == id);
 
             if (meta == null) return NotFound();
@@ -73,9 +73,8 @@ namespace ExpenSysCom.Controllers
                 FechaInicio = meta.FechaInicio,
                 FechaFin = meta.FechaFin,
                 IdAhorro = meta.IdAhorro,
-                IdEstado = meta.IdEstado,
-                NombreAhorro = meta.IdAhorroNavigation?.Nombre,  // <-- Aquí
-                NombreEstado = meta.IdEstadoNavigation?.Nombre,  // <-- Aquí
+                Estado = meta.Estado,
+                NombreAhorro = meta.IdAhorroNavigation?.Nombre,
             };
 
             return View(viewModel);
@@ -85,22 +84,17 @@ namespace ExpenSysCom.Controllers
         public async Task<IActionResult> Create()
         {
             var userId = ObtenerIdUsuarioLogueado();
+
             if (userId == null)
                 return RedirectToAction("Login", "Account");
 
-            // Obtener estado "Activo"
-            var estadoActivo = await _context.Estados.FirstOrDefaultAsync(e => e.Nombre == "Activo");
-            if (estadoActivo == null)
-                return BadRequest("El estado 'Activo' no se encuentra en la base de datos.");
-
-            // Preparar ViewModel
             var viewModel = new MetaViewModel
             {
                 FechaInicio = DateOnly.FromDateTime(DateTime.Today),
-                IdEstado = estadoActivo.IdEstado
             };
 
-            await CargarSelectLists(viewModel, userId);
+            await CargarSelectLists (viewModel, userId);
+
             return View(viewModel);
         }
 
@@ -110,16 +104,16 @@ namespace ExpenSysCom.Controllers
         public async Task<IActionResult> Create(MetaViewModel viewModel)
         {
             var userId = ObtenerIdUsuarioLogueado();
+
             if (userId == null)
                 return RedirectToAction("Login", "Account");
 
-            // Validaciones de fechas
             if (viewModel.FechaFin <= viewModel.FechaInicio)
                 ModelState.AddModelError("FechaFin", "La fecha de fin debe ser posterior a la fecha de inicio.");
+
             if (viewModel.FechaInicio < DateOnly.FromDateTime(DateTime.Today))
                 ModelState.AddModelError("FechaInicio", "La fecha de inicio no puede ser anterior a hoy.");
 
-            // Validación del ahorro asociado
             var ahorro = await _context.Ahorros
                 .Include(a => a.AportesAhorros)
                 .FirstOrDefaultAsync(a => a.IdAhorro == viewModel.IdAhorro && a.IdUsuario == userId);
@@ -140,15 +134,6 @@ namespace ExpenSysCom.Controllers
 
             if (ModelState.IsValid)
             {
-                // Forzar estado Activo
-                var estadoActivo = await _context.Estados.FirstOrDefaultAsync(e => e.Nombre == "Activo");
-                if (estadoActivo == null)
-                {
-                    ModelState.AddModelError("", "No se encontró el estado 'Activo' en la base de datos.");
-                    await CargarSelectLists(viewModel, userId);
-                    return View(viewModel);
-                }
-
                 var meta = new Meta
                 {
                     Nombre = viewModel.Nombre,
@@ -158,15 +143,18 @@ namespace ExpenSysCom.Controllers
                     FechaFin = viewModel.FechaFin,
                     IdAhorro = viewModel.IdAhorro,
                     IdUsuario = userId,
-                    IdEstado = estadoActivo.IdEstado // <-- Aquí garantizamos FK correcta
+                    Estado = Estado.Activo,
                 };
 
                 _context.Add(meta);
+
                 await _context.SaveChangesAsync();
+                
                 return RedirectToAction(nameof(Index));
             }
 
             await CargarSelectLists(viewModel, userId);
+            
             return View(viewModel);
         }
 
@@ -189,7 +177,7 @@ namespace ExpenSysCom.Controllers
                 FechaInicio = meta.FechaInicio,
                 FechaFin = meta.FechaFin,
                 IdAhorro = meta.IdAhorro,
-                IdEstado = meta.IdEstado
+                Estado = meta.Estado
             };
 
             await CargarSelectLists(viewModel, userId);
@@ -204,47 +192,55 @@ namespace ExpenSysCom.Controllers
             if (id != viewModel.IdMeta) return NotFound();
             var userId = ObtenerIdUsuarioLogueado();
 
-            // Validaciones de fechas
             if (viewModel.FechaFin <= viewModel.FechaInicio)
                 ModelState.AddModelError("FechaFin", "La fecha de fin debe ser posterior a la fecha de inicio.");
+
             if (viewModel.FechaInicio < DateOnly.FromDateTime(DateTime.Today))
                 ModelState.AddModelError("FechaInicio", "La fecha de inicio no puede ser anterior a hoy.");
 
             // Validar máximo de 5 metas activas
-            int metasActivas = _context.Metas.Count(m => m.IdUsuario == userId && m.IdEstado == 1 && m.IdMeta != viewModel.IdMeta);
-            if (metasActivas >= 5 && viewModel.IdEstado == 1)
+            int metasActivas = _context.Metas.Count(m => m.IdUsuario == userId && 
+                                                    m.Estado == Estado.Activo && 
+                                                    m.IdMeta != viewModel.IdMeta);
+            
+            if (metasActivas >= 5 && viewModel.Estado == Estado.Activo)
                 ModelState.AddModelError("", "No puedes tener más de 5 metas activas.");
+
 
             if (ModelState.IsValid)
             {
                 var meta = await _context.Metas.FindAsync(viewModel.IdMeta);
+
                 if (meta == null) return NotFound();
+                
                 if (meta.IdUsuario != userId) return Forbid();
 
-                // Bloquear edición si está finalizada
                 if (meta.IdEstado == 3)
                 {
                     TempData["Error"] = "No se puede editar una meta finalizada.";
                     return RedirectToAction(nameof(Index));
                 }
 
-                // Actualizar campos permitidos
                 meta.Nombre = viewModel.Nombre;
                 meta.Descripcion = viewModel.Descripcion;
                 meta.Valor = viewModel.Valor;
                 meta.FechaInicio = viewModel.FechaInicio;
                 meta.FechaFin = viewModel.FechaFin;
                 meta.IdAhorro = viewModel.IdAhorro;
-                meta.IdEstado = viewModel.IdEstado;
+                meta.Estado = viewModel.Estado;
 
                 _context.Update(meta);
+
                 await _context.SaveChangesAsync();
+                
                 return RedirectToAction(nameof(Index));
             }
 
             await CargarSelectLists(viewModel, userId);
             return View(viewModel);
         }
+
+
 
         // ======================= DELETE (GET) =======================
         public async Task<IActionResult> Delete(int? id)
@@ -253,7 +249,6 @@ namespace ExpenSysCom.Controllers
 
             var meta = await _context.Metas
                 .Include(m => m.IdAhorroNavigation)
-                .Include(m => m.IdEstadoNavigation)
                 .FirstOrDefaultAsync(m => m.IdMeta == id);
 
             if (meta == null) return NotFound();
@@ -268,9 +263,8 @@ namespace ExpenSysCom.Controllers
                 FechaInicio = meta.FechaInicio,
                 FechaFin = meta.FechaFin,
                 IdAhorro = meta.IdAhorro,
-                IdEstado = meta.IdEstado,
-                NombreAhorro = meta.IdAhorroNavigation?.Nombre,  // <-- Aquí
-                NombreEstado = meta.IdEstadoNavigation?.Nombre,  // <-- Aquí
+                Estado = meta.Estado,
+                NombreAhorro = meta.IdAhorroNavigation?.Nombre,
 
             };
 
@@ -299,6 +293,8 @@ namespace ExpenSysCom.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
         // ======================= MÉTODOS PRIVADOS =======================
         private string? ObtenerIdUsuarioLogueado()
         {
@@ -311,9 +307,9 @@ namespace ExpenSysCom.Controllers
                 .Where(a => a.IdUsuario == userId)
                 .ToListAsync(), "IdAhorro", "Nombre", viewModel.IdAhorro);
 
-            viewModel.Estados = new SelectList(await _context.Estados
-                .ToListAsync(), "IdEstado", "Nombre", viewModel.IdEstado);
         }
+
+
 
         //pdf
         [HttpPost]
@@ -338,10 +334,10 @@ namespace ExpenSysCom.Controllers
             var datosReporte = metas.Select(m => new DatoReporte
             {
                 Nombre = m.Nombre,
-                Estado = m.IdEstadoNavigation?.Nombre ?? "(Sin estado)",
+                Estado = m.Estado.ToString(),
                 Descripcion = m.Descripcion,
                 Valor = m.Valor,
-                Fecha = m.FechaInicio.ToDateTime(TimeOnly.MinValue) // usar FechaInicio como referencia
+                Fecha = m.FechaInicio.ToDateTime(TimeOnly.MinValue) 
             }).ToList();
 
             var reportePdf = new ReportePdf();

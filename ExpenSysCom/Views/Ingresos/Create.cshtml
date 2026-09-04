@@ -49,11 +49,11 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="IdCategoriaIngreso" class="form-label">Categoría</label>
-                        <select asp-for="IdCategoriaIngreso" asp-items="Model.Categorias" class="form-control">
+                        <label asp-for="CategoriaIngreso" class="form-label">Categoría</label>
+                        <select asp-for="CategoriaIngreso" asp-items="Html.GetEnumSelectList<CategoriaIngreso>()" class="form-control">
                             <option value="">-- Selecciona una categoría --</option>
                         </select>
-                        <span asp-validation-for="IdCategoriaIngreso" class="text-danger"></span>
+                        <span asp-validation-for="CategoriaIngreso" class="text-danger"></span>
                     </div>
 
                     <!-- Botones -->

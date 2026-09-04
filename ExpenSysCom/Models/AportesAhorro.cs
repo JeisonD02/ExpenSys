@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ExpenSysCom.Modelos;
+namespace ExpenSysCom.Models;
 
 public partial class AportesAhorro
 {

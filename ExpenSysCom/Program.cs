@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ExpenSysCom.Data;
-using ExpenSysCom.Modelos;
+using ExpenSysCom.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

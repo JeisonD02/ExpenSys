@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using ExpenSysCom.Data;
+using ExpenSysCom.Enums;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
-using ExpenSysCom.Data;
 
-namespace ExpenSysCom.Modelos;
+namespace ExpenSysCom.Models;
 
 public partial class Ahorro
 {
@@ -25,9 +26,11 @@ public partial class Ahorro
 
     public virtual ICollection<GastosAhorro> GastosAhorros { get; set; } = new List<GastosAhorro>();
 
-    public virtual Estado IdEstadoNavigation { get; set; } = null!;
 
-    public virtual Intensidad IdIntensidadNavigation { get; set; } = null!;
+    public Estado Estado { get; set;}
+
+    public Intensidad Intensidad { get; set; }
+
 
     public virtual ApplicationUser IdUsuarioNavigation { get; set; } = null!;
 

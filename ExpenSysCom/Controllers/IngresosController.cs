@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using ExpenSysCom.Data;
-using ExpenSysCom.Modelos;
+﻿using ExpenSysCom.Data;
+using ExpenSysCom.Models;
 using ExpenSysCom.Services;
 using ExpenSysCom.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ExpenSysCom.Controllers
 {
@@ -25,14 +25,12 @@ namespace ExpenSysCom.Controllers
         }
 
         // ======================= INDEX =======================
-        // Muestra ingresos con filtros de fecha opcionales
         [HttpGet]
         public async Task<IActionResult> Index(DateTime? fechaInicio, DateTime? fechaFin)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var query = _context.Ingresos
-                .Include(i => i.IdCategoriaIngresoNavigation)
                 .Where(i => i.IdUsuario == userId)
                 .AsQueryable();
 
@@ -62,7 +60,6 @@ namespace ExpenSysCom.Controllers
             }
 
             var ingreso = await _context.Ingresos
-                .Include(i => i.IdCategoriaIngresoNavigation)
                 .Include(i => i.IdUsuarioNavigation)
                 .FirstOrDefaultAsync(m => m.IdIngreso == id && m.IdUsuario == User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (ingreso == null)
@@ -73,11 +70,13 @@ namespace ExpenSysCom.Controllers
             return View(ingreso);
         }
 
+
+
         // GET: Ingresos/Create
         public IActionResult Create()
         {
             var viewModel = new IngresoViewModel();
-            viewModel.Categorias = new SelectList(_context.CategoriasIngresos, "IdCategoriaIngreso", "Nombre");
+            
             return View(viewModel);
         }
 
@@ -89,13 +88,14 @@ namespace ExpenSysCom.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
                 var ingreso = new Ingreso
                 {
                     Nombre = viewModel.Nombre,
                     Descripcion = viewModel.Descripcion,
                     Valor = viewModel.Valor,
                     Fecha = viewModel.Fecha,
-                    IdCategoriaIngreso = viewModel.IdCategoriaIngreso,
+                    CategoriaIngreso = viewModel.CategoriaIngreso,
                     IdUsuario = userId
                 };
 
@@ -104,7 +104,6 @@ namespace ExpenSysCom.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            viewModel.Categorias = new SelectList(_context.CategoriasIngresos, "IdCategoriaIngreso", "Nombre", viewModel.IdCategoriaIngreso);
             return View(viewModel);
         }
 
@@ -122,7 +121,6 @@ namespace ExpenSysCom.Controllers
                 return NotFound();
             }
 
-            // Creamos un ViewModel a partir del modelo de la base de datos
             var viewModel = new IngresoViewModel
             {
                 IdIngreso = ingreso.IdIngreso,
@@ -130,11 +128,9 @@ namespace ExpenSysCom.Controllers
                 Descripcion = ingreso.Descripcion,
                 Valor = ingreso.Valor,
                 Fecha = ingreso.Fecha,
-                IdCategoriaIngreso = ingreso.IdCategoriaIngreso
+                CategoriaIngreso = ingreso.CategoriaIngreso
             };
 
-            // Pasamos las categorías al ViewModel
-            viewModel.Categorias = new SelectList(_context.CategoriasIngresos, "IdCategoriaIngreso", "Nombre", ingreso.IdCategoriaIngreso);
             return View(viewModel);
         }
 
@@ -149,7 +145,6 @@ namespace ExpenSysCom.Controllers
             {
                 try
                 {
-                    // Buscamos el ingreso original en la base de datos
                     var ingresoToUpdate = await _context.Ingresos.FirstOrDefaultAsync(i => i.IdIngreso == viewModel.IdIngreso && i.IdUsuario == userId);
 
                     if (ingresoToUpdate == null)
@@ -157,15 +152,16 @@ namespace ExpenSysCom.Controllers
                         return NotFound();
                     }
 
-                    // Actualizamos las propiedades del objeto de la base de datos con los valores del ViewModel
                     ingresoToUpdate.Nombre = viewModel.Nombre;
                     ingresoToUpdate.Descripcion = viewModel.Descripcion;
                     ingresoToUpdate.Valor = viewModel.Valor;
                     ingresoToUpdate.Fecha = viewModel.Fecha;
-                    ingresoToUpdate.IdCategoriaIngreso = viewModel.IdCategoriaIngreso;
+                    ingresoToUpdate.CategoriaIngreso = viewModel.CategoriaIngreso;
 
                     _context.Update(ingresoToUpdate);
+
                     await _context.SaveChangesAsync();
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -181,8 +177,6 @@ namespace ExpenSysCom.Controllers
                 }
             }
 
-            // Si la validación falla, volvemos a llenar la lista de categorías y mostramos la vista
-            viewModel.Categorias = new SelectList(_context.CategoriasIngresos, "IdCategoriaIngreso", "Nombre", viewModel.IdCategoriaIngreso);
             return View(viewModel);
         }
 
@@ -195,9 +189,10 @@ namespace ExpenSysCom.Controllers
             }
 
             var ingreso = await _context.Ingresos
-                .Include(i => i.IdCategoriaIngresoNavigation)
                 .Include(i => i.IdUsuarioNavigation)
-                .FirstOrDefaultAsync(m => m.IdIngreso == id && m.IdUsuario == User.FindFirstValue(ClaimTypes.NameIdentifier));
+                .FirstOrDefaultAsync(m => m.IdIngreso == id && m.IdUsuario == User
+                .FindFirstValue(ClaimTypes.NameIdentifier));
+
             if (ingreso == null)
             {
                 return NotFound();
@@ -227,8 +222,8 @@ namespace ExpenSysCom.Controllers
             return _context.Ingresos.Any(e => e.IdIngreso == id);
         }
 
-        //Generar pdf
 
+        //Generar pdf
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ExportarPdf(DateTime? fechaInicio, DateTime? fechaFin)
@@ -237,7 +232,6 @@ namespace ExpenSysCom.Controllers
 
             var query = _context.Ingresos
                 .Where(i => i.IdUsuario == userId)
-                .Include(i => i.IdCategoriaIngresoNavigation)
                 .AsQueryable();
 
             if (fechaInicio.HasValue)
@@ -251,7 +245,7 @@ namespace ExpenSysCom.Controllers
             var datosReporte = ingresos.Select(i => new DatoReporte
             {
                 Nombre = i.Nombre,
-                Categoria = i.IdCategoriaIngresoNavigation?.Nombre ?? "(Sin categoría)",
+                Categoria = i.CategoriaIngreso.ToString(),
                 Descripcion = i.Descripcion,
                 Valor = i.Valor,
                 Fecha = i.Fecha

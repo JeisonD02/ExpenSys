@@ -1,4 +1,4 @@
-﻿namespace ExpenSysCom.Modelos
+﻿namespace ExpenSysCom.Models
 {
     public class DatoReporte
     {

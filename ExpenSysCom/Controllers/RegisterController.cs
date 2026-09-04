@@ -1,4 +1,4 @@
-﻿using ExpenSysCom.Modelos; 
+﻿using ExpenSysCom.Models; 
 using ExpenSysCom.ViewModels; 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -40,17 +40,16 @@ namespace ExpenSysCom.Controllers
                 PhoneNumber = model.Telefono
             };
 
-            //Crea el usuario
             var result = await _userManager.CreateAsync(newUser, model.Password);
 
             if (result.Succeeded)
             {
-                // Asigna el rol por defecto (Usuario)
                 await _userManager.AddToRoleAsync(newUser, "Usuario");
 
-                // Loguea al usuario
                 await _signInManager.SignInAsync(newUser, isPersistent: false);
+
                 TempData["SuccessMessage"] = "Usuario registrado correctamente.";
+
                 return RedirectToAction("Index", "Login");
             }
             else

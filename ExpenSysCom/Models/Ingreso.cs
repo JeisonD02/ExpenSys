@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using ExpenSysCom.Enums;
 
-namespace ExpenSysCom.Modelos;
+namespace ExpenSysCom.Models;
 
 public partial class Ingreso
 {
@@ -17,11 +18,10 @@ public partial class Ingreso
 
     public string IdUsuario { get; set; } = null!;
 
-    public int IdCategoriaIngreso { get; set; }
 
     public virtual ICollection<AportesAhorro> AportesAhorros { get; set; } = new List<AportesAhorro>();
 
-    public virtual CategoriasIngreso IdCategoriaIngresoNavigation { get; set; } = null!;
+    public CategoriaIngreso CategoriaIngreso { get; set; }
 
     public virtual ApplicationUser IdUsuarioNavigation { get; set; } = null!;
 }

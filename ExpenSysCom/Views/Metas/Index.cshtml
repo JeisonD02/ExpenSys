@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ExpenSysCom.Modelos.Meta>
+﻿@model IEnumerable<ExpenSysCom.Models.Meta>
 
 @{
     ViewData["Title"] = "Mis Metas";
@@ -86,7 +86,7 @@
                     <td>@item.FechaInicio.ToShortDateString()</td>
                     <td>@item.FechaFin.ToShortDateString()</td>
                     <td>@item.IdAhorroNavigation?.Nombre</td>
-                    <td>@item.IdEstadoNavigation?.Nombre</td>
+                    <td>@item.Estado</td>
                     <td class="text-center">
                         <a asp-action="Edit" asp-route-id="@item.IdMeta" class="btn btn-sm btn-primary me-1" title="Editar">
                             <i class="fas fa-pen"></i>

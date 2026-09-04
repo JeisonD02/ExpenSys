@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using ExpenSysCom.Modelos;
+using ExpenSysCom.Models;
 
 namespace ExpenSysCom.Controllers
 {
@@ -11,7 +11,8 @@ namespace ExpenSysCom.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public LoginController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public LoginController(SignInManager<ApplicationUser> signInManager, 
+                                UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;

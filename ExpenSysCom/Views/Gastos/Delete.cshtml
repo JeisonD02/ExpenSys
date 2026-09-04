@@ -1,4 +1,4 @@
-﻿@model ExpenSysCom.Modelos.Gasto
+﻿@model ExpenSysCom.Models.Gasto
 
 @{
     ViewData["Title"] = "Eliminar Gasto";
@@ -28,7 +28,7 @@
                     <dd class="col-sm-8">@Model.Fecha.ToShortDateString()</dd>
 
                     <dt class="col-sm-4">Categoría</dt>
-                    <dd class="col-sm-8">@Model.IdCategoriaGastoNavigation?.Nombre</dd>
+                    <dd class="col-sm-8">@Model.CategoriaGasto</dd>
                 </dl>
             </div>
 

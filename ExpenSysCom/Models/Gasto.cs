@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using ExpenSysCom.Enums;
 
-namespace ExpenSysCom.Modelos;
+namespace ExpenSysCom.Models;
 
 public partial class Gasto
 {
@@ -22,7 +23,7 @@ public partial class Gasto
 
     public virtual ICollection<GastosAhorro> GastosAhorros { get; set; } = new List<GastosAhorro>();
 
-    public virtual CategoriasGasto IdCategoriaGastoNavigation { get; set; } = null!;
+    public CategoriaGasto CategoriaGasto { get; set; }
 
     public virtual ApplicationUser IdUsuarioNavigation { get; set; } = null!;
 }

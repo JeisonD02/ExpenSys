@@ -1,4 +1,4 @@
-﻿using ExpenSysCom.Modelos;
+﻿using ExpenSysCom.Models;
 using ExpenSysCom.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +17,6 @@ namespace ExpenSysCom.Controllers
             _roleManager = roleManager;
         }
 
-        // GET: Usuarios
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
@@ -43,6 +42,9 @@ namespace ExpenSysCom.Controllers
 
             return View(model);
         }
+
+
+
         // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -67,6 +69,9 @@ namespace ExpenSysCom.Controllers
             return View(model);
         }
 
+
+
+
         // GET: Usuarios/Create
         public IActionResult Create()
         {
@@ -86,24 +91,20 @@ namespace ExpenSysCom.Controllers
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
                 NoDocumento = model.NoDocumento,
-                IsActive = true // Siempre lo dejamos activo al crear
+                IsActive = true 
             };
 
-            // Crear usuario con su contraseña (se hashea automáticamente)
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                // 👇 Si no viene rol, por defecto asignamos "Usuario"
                 var role = string.IsNullOrEmpty(model.Role) ? "Usuario" : model.Role;
 
-                // 👇 Verificar que el rol exista; si no, lo creamos
                 if (!await _roleManager.RoleExistsAsync(role))
                 {
                     await _roleManager.CreateAsync(new IdentityRole(role));
                 }
 
-                // 👇 Asignar rol al usuario
                 await _userManager.AddToRoleAsync(user, role);
 
                 TempData["Success"] = $"El usuario {user.UserName} fue creado correctamente con el rol {role}.";
@@ -111,7 +112,6 @@ namespace ExpenSysCom.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Manejo de errores de Identity (ejemplo: contraseña débil, email duplicado, etc.)
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error.Description);

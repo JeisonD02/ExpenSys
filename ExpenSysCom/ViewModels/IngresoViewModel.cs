@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using ExpenSysCom.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 
 namespace ExpenSysCom.ViewModels
@@ -19,19 +20,16 @@ namespace ExpenSysCom.ViewModels
 
         [Required(ErrorMessage = "El valor es obligatorio.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "El valor debe ser mayor que 0.")]
-        [Column(TypeName = "decimal(18, 2)")] // Asegura el tipo de dato correcto
+        [Column(TypeName = "decimal(18, 2)")] 
         public decimal Valor { get; set; }
 
         [Required(ErrorMessage = "La fecha es obligatoria.")]
         [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
 
+
         [Required(ErrorMessage = "La categoría es obligatoria.")]
         [Display(Name = "Categoría del Ingreso")]
-        public int IdCategoriaIngreso { get; set; }
-
-        // Propiedad para la lista de categorías en el dropdown
-        // Se carga en el controlador y se usa en la vista.
-        public IEnumerable<SelectListItem>? Categorias { get; set; }
+        public CategoriaIngreso CategoriaIngreso { get; set; }
     }
 }

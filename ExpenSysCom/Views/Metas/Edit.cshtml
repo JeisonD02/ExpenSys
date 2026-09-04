@@ -25,7 +25,7 @@
                 <form asp-action="Edit" method="post">
                     <input type="hidden" asp-for="IdMeta" />
 
-                    @if (Model.IdEstado == 3)  // 3 = Finalizada
+                    @if (Model.Estado == Estado.Finalizado)
                     {
                         <div class="alert alert-warning">
                             Esta meta está <strong>Finalizada</strong> y no puede editarse.
@@ -104,9 +104,9 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label asp-for="IdEstado" class="form-label">Estado</label>
-                            <select asp-for="IdEstado" class="form-control" asp-items="@Model.Estados"></select>
-                            <span asp-validation-for="IdEstado" class="text-danger"></span>
+                            <label asp-for="Estado" class="form-label">Estado</label>
+                            <select asp-for="Estado" class="form-control" asp-items="Html.GetEnumSelectList<Estado>()"></select>
+                            <span asp-validation-for="Estado" class="text-danger"></span>
                         </div>
 
                         <div class="d-grid gap-2">

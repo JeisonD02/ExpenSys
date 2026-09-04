@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using ExpenSysCom.Data;
+using ExpenSysCom.Enums;
 
-namespace ExpenSysCom.Modelos;
+namespace ExpenSysCom.Models;
 
 public partial class Meta
 {
@@ -26,7 +27,7 @@ public partial class Meta
 
     public virtual Ahorro IdAhorroNavigation { get; set; } = null!;
 
-    public virtual Estado IdEstadoNavigation { get; set; } = null!;
+    public Estado Estado { get; set; }
 
     public virtual ApplicationUser IdUsuarioNavigation { get; set; } = null!;
 }

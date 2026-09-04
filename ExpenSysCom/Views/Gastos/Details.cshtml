@@ -1,4 +1,4 @@
-﻿@model ExpenSysCom.Modelos.Gasto
+﻿@model ExpenSysCom.Models.Gasto
 
 @{
     ViewData["Title"] = "Detalles del Gasto";
@@ -31,7 +31,7 @@
                     <dt class="col-sm-4 fw-bold">Categoría</dt>
                     <dd class="col-sm-8">
                         <span class="badge bg-warning text-dark">
-                            @Model.IdCategoriaGastoNavigation?.Nombre
+                            @Model.CategoriaGasto
                         </span>
                     </dd>
                 </dl>

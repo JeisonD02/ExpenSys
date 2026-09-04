@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using ExpenSysCom.Modelos;
+using ExpenSysCom.Models;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 

@@ -22,7 +22,7 @@ namespace ExpenSysCom.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.Ahorro", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Ahorro", b =>
                 {
                     b.Property<int>("IdAhorro")
                         .ValueGeneratedOnAdd()
@@ -35,6 +35,9 @@ namespace ExpenSysCom.Migrations
                         .HasMaxLength(250)
                         .IsUnicode(false)
                         .HasColumnType("varchar(250)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
 
                     b.Property<int>("IdEstado")
                         .HasColumnType("int")
@@ -49,6 +52,9 @@ namespace ExpenSysCom.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("ID_Usuario");
 
+                    b.Property<int>("Intensidad")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -61,16 +67,12 @@ namespace ExpenSysCom.Migrations
                     b.HasKey("IdAhorro")
                         .HasName("PK_Ahorro");
 
-                    b.HasIndex("IdEstado");
-
-                    b.HasIndex("IdIntensidad");
-
                     b.HasIndex("IdUsuario");
 
                     b.ToTable("Ahorros");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.AportesAhorro", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.AportesAhorro", b =>
                 {
                     b.Property<int>("IdAporteAhorro")
                         .ValueGeneratedOnAdd()
@@ -105,7 +107,7 @@ namespace ExpenSysCom.Migrations
                     b.ToTable("AportesAhorros");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.ApplicationUser", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)")
@@ -178,70 +180,7 @@ namespace ExpenSysCom.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.CategoriasGasto", b =>
-                {
-                    b.Property<int>("IdCategoriaGasto")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ID_CategoriasGasto");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCategoriaGasto"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(250)");
-
-                    b.HasKey("IdCategoriaGasto")
-                        .HasName("PK_CategoriasGasto");
-
-                    b.ToTable("CategoriasGastos");
-                });
-
-            modelBuilder.Entity("ExpenSysCom.Modelos.CategoriasIngreso", b =>
-                {
-                    b.Property<int>("IdCategoriaIngreso")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ID_CategoriasIngreso");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCategoriaIngreso"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(250)");
-
-                    b.HasKey("IdCategoriaIngreso")
-                        .HasName("PK_CategoriasIngreso");
-
-                    b.ToTable("CategoriasIngresos");
-                });
-
-            modelBuilder.Entity("ExpenSysCom.Modelos.Estado", b =>
-                {
-                    b.Property<int>("IdEstado")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ID_Estado");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstado"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(250)");
-
-                    b.HasKey("IdEstado")
-                        .HasName("PK_Estados");
-
-                    b.ToTable("Estados");
-                });
-
-            modelBuilder.Entity("ExpenSysCom.Modelos.Gasto", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Gasto", b =>
                 {
                     b.Property<int>("IdGasto")
                         .ValueGeneratedOnAdd()
@@ -249,6 +188,9 @@ namespace ExpenSysCom.Migrations
                         .HasColumnName("ID_Gasto");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdGasto"));
+
+                    b.Property<int>("CategoriaGasto")
+                        .HasColumnType("int");
 
                     b.Property<string>("Descripcion")
                         .HasMaxLength(250)
@@ -281,14 +223,12 @@ namespace ExpenSysCom.Migrations
                     b.HasKey("IdGasto")
                         .HasName("PK_Gastos");
 
-                    b.HasIndex("IdCategoriaGasto");
-
                     b.HasIndex("IdUsuario");
 
                     b.ToTable("Gastos");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.GastosAhorro", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.GastosAhorro", b =>
                 {
                     b.Property<int>("IdGastoAhorro")
                         .ValueGeneratedOnAdd()
@@ -323,7 +263,7 @@ namespace ExpenSysCom.Migrations
                     b.ToTable("GastosAhorros");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.Ingreso", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Ingreso", b =>
                 {
                     b.Property<int>("IdIngreso")
                         .ValueGeneratedOnAdd()
@@ -331,6 +271,10 @@ namespace ExpenSysCom.Migrations
                         .HasColumnName("ID_Ingreso");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdIngreso"));
+
+                    b.Property<int>("CategoriaIngreso")
+                        .HasColumnType("int")
+                        .HasColumnName("ID_CategoriaIngreso");
 
                     b.Property<string>("Descripcion")
                         .HasMaxLength(250)
@@ -341,10 +285,6 @@ namespace ExpenSysCom.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
-
-                    b.Property<int>("IdCategoriaIngreso")
-                        .HasColumnType("int")
-                        .HasColumnName("ID_CategoriaIngreso");
 
                     b.Property<string>("IdUsuario")
                         .IsRequired()
@@ -363,35 +303,12 @@ namespace ExpenSysCom.Migrations
                     b.HasKey("IdIngreso")
                         .HasName("PK_Ingresos");
 
-                    b.HasIndex("IdCategoriaIngreso");
-
                     b.HasIndex("IdUsuario");
 
                     b.ToTable("Ingresos");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.Intensidad", b =>
-                {
-                    b.Property<int>("IdIntensidad")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ID_Intensidad");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdIntensidad"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(250)");
-
-                    b.HasKey("IdIntensidad")
-                        .HasName("PK_Intensidades");
-
-                    b.ToTable("Intensidades");
-                });
-
-            modelBuilder.Entity("ExpenSysCom.Modelos.Meta", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Meta", b =>
                 {
                     b.Property<int>("IdMeta")
                         .ValueGeneratedOnAdd()
@@ -404,6 +321,9 @@ namespace ExpenSysCom.Migrations
                         .HasMaxLength(250)
                         .IsUnicode(false)
                         .HasColumnType("varchar(250)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
 
                     b.Property<DateOnly>("FechaFin")
                         .HasColumnType("date");
@@ -437,8 +357,6 @@ namespace ExpenSysCom.Migrations
                         .HasName("PK_Meta");
 
                     b.HasIndex("IdAhorro");
-
-                    b.HasIndex("IdEstado");
 
                     b.HasIndex("IdUsuario");
 
@@ -578,42 +496,26 @@ namespace ExpenSysCom.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.Ahorro", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Ahorro", b =>
                 {
-                    b.HasOne("ExpenSysCom.Modelos.Estado", "IdEstadoNavigation")
-                        .WithMany("Ahorros")
-                        .HasForeignKey("IdEstado")
-                        .IsRequired()
-                        .HasConstraintName("FK_Ahorro_Estado");
-
-                    b.HasOne("ExpenSysCom.Modelos.Intensidad", "IdIntensidadNavigation")
-                        .WithMany("Ahorros")
-                        .HasForeignKey("IdIntensidad")
-                        .IsRequired()
-                        .HasConstraintName("FK_Ahorro_Intensidad");
-
-                    b.HasOne("ExpenSysCom.Modelos.ApplicationUser", "IdUsuarioNavigation")
+                    b.HasOne("ExpenSysCom.Models.ApplicationUser", "IdUsuarioNavigation")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
                         .IsRequired();
 
-                    b.Navigation("IdEstadoNavigation");
-
-                    b.Navigation("IdIntensidadNavigation");
-
                     b.Navigation("IdUsuarioNavigation");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.AportesAhorro", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.AportesAhorro", b =>
                 {
-                    b.HasOne("ExpenSysCom.Modelos.Ahorro", "IdAhorroNavigation")
+                    b.HasOne("ExpenSysCom.Models.Ahorro", "IdAhorroNavigation")
                         .WithMany("AportesAhorros")
                         .HasForeignKey("IdAhorro")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_AportesAhorros_Ahorros");
 
-                    b.HasOne("ExpenSysCom.Modelos.Ingreso", "IdIngresoNavigation")
+                    b.HasOne("ExpenSysCom.Models.Ingreso", "IdIngresoNavigation")
                         .WithMany("AportesAhorros")
                         .HasForeignKey("IdIngreso")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -625,34 +527,26 @@ namespace ExpenSysCom.Migrations
                     b.Navigation("IdIngresoNavigation");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.Gasto", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Gasto", b =>
                 {
-                    b.HasOne("ExpenSysCom.Modelos.CategoriasGasto", "IdCategoriaGastoNavigation")
-                        .WithMany("Gastos")
-                        .HasForeignKey("IdCategoriaGasto")
-                        .IsRequired()
-                        .HasConstraintName("FK_Gastos_CategoriasGastos");
-
-                    b.HasOne("ExpenSysCom.Modelos.ApplicationUser", "IdUsuarioNavigation")
+                    b.HasOne("ExpenSysCom.Models.ApplicationUser", "IdUsuarioNavigation")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
                         .IsRequired();
 
-                    b.Navigation("IdCategoriaGastoNavigation");
-
                     b.Navigation("IdUsuarioNavigation");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.GastosAhorro", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.GastosAhorro", b =>
                 {
-                    b.HasOne("ExpenSysCom.Modelos.Ahorro", "IdAhorroNavigation")
+                    b.HasOne("ExpenSysCom.Models.Ahorro", "IdAhorroNavigation")
                         .WithMany("GastosAhorros")
                         .HasForeignKey("IdAhorro")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_GastosAhorro_Ahorro");
 
-                    b.HasOne("ExpenSysCom.Modelos.Gasto", "IdGastoNavigation")
+                    b.HasOne("ExpenSysCom.Models.Gasto", "IdGastoNavigation")
                         .WithMany("GastosAhorros")
                         .HasForeignKey("IdGasto")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -664,46 +558,30 @@ namespace ExpenSysCom.Migrations
                     b.Navigation("IdGastoNavigation");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.Ingreso", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Ingreso", b =>
                 {
-                    b.HasOne("ExpenSysCom.Modelos.CategoriasIngreso", "IdCategoriaIngresoNavigation")
-                        .WithMany("Ingresos")
-                        .HasForeignKey("IdCategoriaIngreso")
-                        .IsRequired()
-                        .HasConstraintName("FK_Ingresos_CategoriasIngresos");
-
-                    b.HasOne("ExpenSysCom.Modelos.ApplicationUser", "IdUsuarioNavigation")
+                    b.HasOne("ExpenSysCom.Models.ApplicationUser", "IdUsuarioNavigation")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
                         .IsRequired();
 
-                    b.Navigation("IdCategoriaIngresoNavigation");
-
                     b.Navigation("IdUsuarioNavigation");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.Meta", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Meta", b =>
                 {
-                    b.HasOne("ExpenSysCom.Modelos.Ahorro", "IdAhorroNavigation")
+                    b.HasOne("ExpenSysCom.Models.Ahorro", "IdAhorroNavigation")
                         .WithMany("Meta")
                         .HasForeignKey("IdAhorro")
                         .IsRequired()
                         .HasConstraintName("FK_Meta_Ahorro");
 
-                    b.HasOne("ExpenSysCom.Modelos.Estado", "IdEstadoNavigation")
-                        .WithMany("Meta")
-                        .HasForeignKey("IdEstado")
-                        .IsRequired()
-                        .HasConstraintName("FK_Meta_Estado");
-
-                    b.HasOne("ExpenSysCom.Modelos.ApplicationUser", "IdUsuarioNavigation")
+                    b.HasOne("ExpenSysCom.Models.ApplicationUser", "IdUsuarioNavigation")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
                         .IsRequired();
 
                     b.Navigation("IdAhorroNavigation");
-
-                    b.Navigation("IdEstadoNavigation");
 
                     b.Navigation("IdUsuarioNavigation");
                 });
@@ -719,7 +597,7 @@ namespace ExpenSysCom.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ExpenSysCom.Modelos.ApplicationUser", null)
+                    b.HasOne("ExpenSysCom.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -728,7 +606,7 @@ namespace ExpenSysCom.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ExpenSysCom.Modelos.ApplicationUser", null)
+                    b.HasOne("ExpenSysCom.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -743,7 +621,7 @@ namespace ExpenSysCom.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ExpenSysCom.Modelos.ApplicationUser", null)
+                    b.HasOne("ExpenSysCom.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -752,14 +630,14 @@ namespace ExpenSysCom.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ExpenSysCom.Modelos.ApplicationUser", null)
+                    b.HasOne("ExpenSysCom.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.Ahorro", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Ahorro", b =>
                 {
                     b.Navigation("AportesAhorros");
 
@@ -768,36 +646,14 @@ namespace ExpenSysCom.Migrations
                     b.Navigation("Meta");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.CategoriasGasto", b =>
-                {
-                    b.Navigation("Gastos");
-                });
-
-            modelBuilder.Entity("ExpenSysCom.Modelos.CategoriasIngreso", b =>
-                {
-                    b.Navigation("Ingresos");
-                });
-
-            modelBuilder.Entity("ExpenSysCom.Modelos.Estado", b =>
-                {
-                    b.Navigation("Ahorros");
-
-                    b.Navigation("Meta");
-                });
-
-            modelBuilder.Entity("ExpenSysCom.Modelos.Gasto", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Gasto", b =>
                 {
                     b.Navigation("GastosAhorros");
                 });
 
-            modelBuilder.Entity("ExpenSysCom.Modelos.Ingreso", b =>
+            modelBuilder.Entity("ExpenSysCom.Models.Ingreso", b =>
                 {
                     b.Navigation("AportesAhorros");
-                });
-
-            modelBuilder.Entity("ExpenSysCom.Modelos.Intensidad", b =>
-                {
-                    b.Navigation("Ahorros");
                 });
 #pragma warning restore 612, 618
         }

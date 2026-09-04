@@ -43,11 +43,15 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="IdIntensidad" class="form-label">Intensidad</label>
-                        <select asp-for="IdIntensidad" class="form-control" asp-items="Model.Intensidades">
+                        <label asp-for="Intensidad" 
+                                class="form-label">Intensidad</label>
+                        <select asp-for="Intensidad" 
+                                class="form-control" 
+                                asp-items="Html.GetEnumSelectList<Intensidad>()">
+
                             <option value="">-- Selecciona una intensidad --</option>
                         </select>
-                        <span asp-validation-for="IdIntensidad" class="text-danger"></span>
+                        <span asp-validation-for="Intensidad" class="text-danger"></span>
                     </div>
 
                     <!-- Botones mejorados -->

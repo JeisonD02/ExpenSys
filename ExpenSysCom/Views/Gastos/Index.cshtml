@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ExpenSysCom.Modelos.Gasto>
+﻿@model IEnumerable<ExpenSysCom.Models.Gasto>
 
 @{
     ViewData["Title"] = "Gastos Registrados";
@@ -80,7 +80,7 @@
                     <td>@item.Descripcion</td>
                     <td>@item.Valor.ToString("C")</td>
                     <td>@item.Fecha.ToShortDateString()</td>
-                    <td>@item.IdCategoriaGastoNavigation?.Nombre</td>
+                    <td>@item.CategoriaGasto</td>
                     <td class="text-center">
                         <a class="btn btn-sm btn-primary me-1" asp-action="Edit" asp-route-id="@item.IdGasto" title="Editar">
                             <i class="fas fa-pen"></i>
